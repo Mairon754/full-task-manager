@@ -35,23 +35,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderTasks() {
         taskList.innerHTML = '';
-        tasks.forEach(
-            task => {
-                console.log(task);
-
-                const li = document.createElement('li');
-                li.innerHTML =
-                    '<span>' + task.text + '</span>' +
+        tasks.forEach(task => {
+            const li = document.createElement('li');
+            li.innerHTML = '<span>' + task.text + '</span>';
+    
+            if (!task.complete) {
+                li.innerHTML +=
                     '<div>' +
-                    '<button class="edit-btn" onclick="editTask(' + task.id + ')">' +
-                    'Editar </button>' +
-                    '<button class="delete-btn" onclick="deleteTask(' + task.id + ')">' +
-                    'Eliminar </button>' +
+                    '<button class="compl-btn" onclick="complTask(' + task.id + ')">Completar</button>' +
+                    '<button class="edit-btn" onclick="editTask(' + task.id + ')">Editar</button>' +
+                    '<button class="delete-btn" onclick="deleteTask(' + task.id + ')">Eliminar</button>' +
                     '</div>';
-                taskList.appendChild(li);
             }
-
-        );
+    
+            if (task.complete) {
+                li.style.backgroundColor = "lightgreen";
+                
+            }
+    
+            taskList.appendChild(li);
+        });
     }
 
     window.deleteTask = function (id) {
@@ -68,6 +71,14 @@ document.addEventListener('DOMContentLoaded', () => {
             isEditing = true;
             editingId = et.id;
         }
+    }
+
+    window.complTask = function (id) {
+        tasks = tasks.map(task =>
+            task.id === id ? { ...task, complete: true } : task
+        );
+        renderTasks();
+    
     }
 
 });
