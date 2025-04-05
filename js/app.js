@@ -37,24 +37,28 @@ document.addEventListener('DOMContentLoaded', () => {
         taskList.innerHTML = '';
         tasks.forEach(task => {
             const li = document.createElement('li');
-            li.innerHTML = '<span>' + task.text + '</span>';
-    
+            li.className = 'flex justify-between items-center px-4 py-2 rounded mb-2 ' + 
+                           (task.complete ? 'bg-green-200' : 'bg-gray-100');
+
+            let buttons = '';
+
             if (!task.complete) {
-                li.innerHTML +=
-                    '<div>' +
-                    '<button class="compl-btn" onclick="complTask(' + task.id + ')">Completar</button>' +
-                    '<button class="edit-btn" onclick="editTask(' + task.id + ')">Editar</button>' +
-                    '<button class="delete-btn" onclick="deleteTask(' + task.id + ')">Eliminar</button>' +
-                    '</div>';
+                buttons +=
+                    '<button class="text-green-600 hover:underline" onclick="complTask(' + task.id + ')">' +
+                    'Completar </button>';
+                    buttons +=
+                    '<button class="text-blue-600 hover:underline" onclick="editTask(' + task.id + ')">' +
+                    'Editar </button>' +
+                    '<button class="text-red-600 hover:underline" onclick="deleteTask(' + task.id + ')">' +
+                    'Eliminar </button>';
             }
-    
-            if (task.complete) {
-                li.style.backgroundColor = "lightgreen";
-                
-            }
-    
+
+            li.innerHTML =
+                '<span>' + task.text + '</span>' +
+                '<div class="space-x-2">' + buttons + '</div>';
+
             taskList.appendChild(li);
-        });
+        });
     }
 
     window.deleteTask = function (id) {
@@ -78,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
             task.id === id ? { ...task, complete: true } : task
         );
         renderTasks();
-    
     }
 
 });
